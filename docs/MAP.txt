@@ -1,4 +1,7 @@
 MAP
 
 Goals:
+<<<<<<< HEAD
 Hey this is sam
+=======
+>>>>>>> 6ed8316ac34fed1723473b30106417ed17e96bc3
