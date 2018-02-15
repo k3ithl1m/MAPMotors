@@ -2,6 +2,9 @@ MAP
 
 Goals:
 <<<<<<< HEAD
+<<<<<<< HEAD
 Hey this is sam
 =======
 >>>>>>> 6ed8316ac34fed1723473b30106417ed17e96bc3
+=======
+>>>>>>> 0dda32a6e59daf54ec37484c47e49b471bb5ec2e
