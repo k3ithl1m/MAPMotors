@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5338DD68203F234B0084389B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5338DD67203F234B0084389B /* main.cpp */; };
+		5338DD77203F23E60084389B /* MuscleMotor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5338DD75203F23E60084389B /* MuscleMotor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +26,8 @@
 /* Begin PBXFileReference section */
 		5338DD64203F234B0084389B /* MAPMotors */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = MAPMotors; sourceTree = BUILT_PRODUCTS_DIR; };
 		5338DD67203F234B0084389B /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		5338DD75203F23E60084389B /* MuscleMotor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = MuscleMotor.cpp; sourceTree = "<group>"; };
+		5338DD76203F23E60084389B /* MuscleMotor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MuscleMotor.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,9 +60,27 @@
 		5338DD66203F234B0084389B /* MAPMotors */ = {
 			isa = PBXGroup;
 			children = (
+				5338DD73203F23B10084389B /* src */,
 				5338DD67203F234B0084389B /* main.cpp */,
 			);
 			path = MAPMotors;
+			sourceTree = "<group>";
+		};
+		5338DD73203F23B10084389B /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5338DD74203F23D80084389B /* MuscleMotor */,
+			);
+			path = src;
+			sourceTree = "<group>";
+		};
+		5338DD74203F23D80084389B /* MuscleMotor */ = {
+			isa = PBXGroup;
+			children = (
+				5338DD75203F23E60084389B /* MuscleMotor.cpp */,
+				5338DD76203F23E60084389B /* MuscleMotor.hpp */,
+			);
+			path = MuscleMotor;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -119,6 +140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5338DD77203F23E60084389B /* MuscleMotor.cpp in Sources */,
 				5338DD68203F234B0084389B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

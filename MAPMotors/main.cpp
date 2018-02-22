@@ -1,15 +1,18 @@
 //
 //  main.cpp
-//  MAPMotors
+//  MAPMuscleMotor
 //
-//  Created by Keith Lim on 2/22/18.
-//  Copyright © 2018 MAP. All rights reserved.
+//  Created by Keith Lim on 2/15/18.
+//  Copyright © 2018 Keith Lim. All rights reserved.
 //
 
 #include <iostream>
+#include "MuscleMotor.hpp"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    std::cout << "Hello, World!\n";
+    MuscleMotor* mm = new MuscleMotor;
+    mm->sayHello();
     return 0;
 }
+
