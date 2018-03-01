@@ -15,4 +15,3 @@ int main(int argc, const char * argv[]) {
     mm->sayHello();
     return 0;
 }
-
