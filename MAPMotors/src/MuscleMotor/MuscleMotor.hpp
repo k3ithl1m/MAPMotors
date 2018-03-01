@@ -14,43 +14,21 @@
 
 class MuscleMotor {
 private:
-    bool forwardNotReverse;
-    bool motorStop;
-    bool signalRecorded;
-    bool hasTheSignalPeakedFinish;
+    bool openGrip;
     bool signalPeaked;
-    bool isTheGripInOpenPosition;
     int16_t signalFromSensor;
-    int16_t signalModerator;
     int16_t maxSignal;
     int16_t minSignal;
-    int16_t temp;
-    int speed;
+    unsigned long currentCounter;
+    unsigned long pastCounter;
+    int amountOfSeconds;
     
     
 public:
-    MuscleMotor();                    //done
-    bool getSignalRecorded();
-    bool isMotorStop();            //done
-    bool forwardOrReverse();       //done
-    bool didWeCloseGrip();         //done
-    bool isLowerBound();           //done
-    int16_t getSignalFromSensor();    //done
-    void saveTempSignal();
-    void updateMaxSignal(int16_t signalReceived);
-    void updateSignalFromSensor(int16_t signalReceived); //done
-    void gripAtRest();                //done
-    void closeGrip();                 //done
-    void openGrip();                  //done
-    void toggleMotor();               //done
-    void toggleDirection();           //done
-    void runMuscleMotor(int16_t emgSignal, int lengthOfWindow);
-    void firstGrip();
-    void secondGrip();
-    void stopMotor();
-    void gripDecisionCloseOrOpen();
-    void whichGripShouldWeRun();
+    MuscleMotor(int16_t, int16_t);                    //done
     void sayHello();
+    void readSignal(int16_t);
+    bool checkGripPosition(int16_t, unsigned long);
     
 };
 

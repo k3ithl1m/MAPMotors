@@ -11,8 +11,7 @@
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    MuscleMotor* mm = new MuscleMotor(7000, 1000);
+    MuscleMotor* mm = new MuscleMotor;
     mm->sayHello();
     return 0;
 }
-
