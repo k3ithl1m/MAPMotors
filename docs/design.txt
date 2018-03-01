@@ -5,4 +5,8 @@ continue running the motor.
 
 Takes in signal and basically sends out a boolean to run stuff?
 
+<<<<<<< HEAD
 http://forum.arduino.cc/index.php?topic=164757.0
+=======
+http://forum.arduino.cc/index.php?topic=164757.0
+>>>>>>> e01cb1d03df7265f77c839fd9c8ffadc6e8cac78
