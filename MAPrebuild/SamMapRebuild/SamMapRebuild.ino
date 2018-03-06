@@ -1,4 +1,3 @@
-
 #include <Servo.h>
 Servo myservo;
 const int buttonPin = 6;
@@ -108,22 +107,28 @@ void loop() {
 
   if(gripPosition == false){
     if(buttonValue == HIGH){
-       gripPosition = mm->checkGripPosition(buttonValue, StartTime);
-
+           pressedTime = millis();
+      if(pressedTime - StartTime >2000){
       for (pos = 0; pos < 180; pos = pos + 1){
         myservo.write(pos);
         delay(5);
+        gripPosition == true;
+          }
+        }
       }
     }
   }
 
   else if (gripPosition == true) {
     if (buttonValue == HIGH){
- gripPosition = mm->checkGripPosition(buttonValue, StartTime);
-
+           pressedTime = millis();
+      if(pressedTime - StartTime > 2000){
       for (pos = 180; pos > 1; pos = pos - 1) {
         myservo.write(pos);
         delay(5);
+        gripPosition == false;
+          }
+        }
       }
     }
   }
