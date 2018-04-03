@@ -1,4 +1,8 @@
-
+/**
+* @author Keith Lim and Sam Gullinello
+* The Main file for working the MAP
+* Consist of the latest working code
+**/
 #include <Servo.h>
 Servo myservo;
 const int bicepPin = 6;
@@ -14,13 +18,14 @@ int runningValue = 2000;
 int currentTime = 0;
 int pressedTime;
 int releasedTime;
-int pressLength_milliSeconds = 0;
+int pressLength = 0;
+bool gripOpen = false;
 
 
 void setup() {
   // put your setup code here, to run once:
   myservo.attach(4);
-  myservo.writeMicroseconds(servoState);
+  myservo.write(servoState);
   pinMode(bicepPin,INPUT);
   pinMode(tricepPin,INPUT);
   Serial.begin(9600);
@@ -47,6 +52,8 @@ private:
   unsigned long currentCounter;
   unsigned long pastCounter;
   int amountOfSeconds;
+  int pumpedMuscle;
+  int pumpedMuscleCounter;
 
 
 public:
@@ -69,6 +76,8 @@ MuscleMotor::MuscleMotor(int16_t maxsignal, int16_t minsignal)
   this->minSignal = minsignal;
   this->signalPeaked = false;
   this->amountOfSeconds = 0;
+  this->pumpedMuscleCounter = 0;
+  this->pumpedMuscle = false;
 }
 
 /**
@@ -93,25 +102,107 @@ int MuscleMotor::getAmountOfSeconds()
 bool MuscleMotor::checkGripPosition(int16_t bicepValue, int16_t tricepValue)
 {
 
-  if (amountOfSeconds >= 2000) {
+  //A hack to allow the actuator to work. We've to change
+  // the amount of seconds to be more than the time for
+  // the grip to change. Once it is higher than the time
+  // for the grip to change (2000 or 2 seconds). We change
+  // the time press back to 0;
 
-    return openGrip;
+  /**new**/
+  if (amountOfSeconds >= 1600) {
+    amountOfSeconds = 0;
+  }
 
-    amountOfSeconds = 0;
-  } else if (bicepValue != HIGH && tricepValue != HIGH) {
-    amountOfSeconds = 0;
-    return currentGrip;
+  if (!openGrip) {
+
+
+    //If the muscle is squeezed for 2 seconds, Switch the
+    //grip, save the grip to the currentGrip and then
+    // return the openGrip.
+    if (amountOfSeconds >= 1500) {
+
+      openGrip = true;
+      currentGrip = openGrip;
+      if (currentGrip) Serial.println("Changing bool to open");
+      amountOfSeconds+=100;
+      return openGrip;
+
+      //if the value of Bicep and tripcep is not high (not squeezed)
+      // return the currentGrip Position.
+    } else if (bicepValue != HIGH && tricepValue != HIGH) {
+      amountOfSeconds = 0;
+      return currentGrip;
+
+      //if the muscles is squeezed for less than 2 seconds,
+      //delay the system for 1 millisecond, then add 1 millisecond
+      // to the total amount of seconds.
+    } else {
+      delay(100);
+      amountOfSeconds += 100;
+    }
   } else {
-    delay(100);
-    amountOfSeconds += 100;
-    Serial.print("ms = ");
-    Serial.println(amountOfSeconds);
+    // if the muscle has been pumped twice and it is equal or over the timer
+    // open the hand.
+    if (pumpedMuscleCounter >= 2 && amountOfSeconds >= 1500) {
+
+      openGrip = false;
+      currentGrip = openGrip;
+      if (!currentGrip) Serial.println("Changing to close");
+      amountOfSeconds += 100;
+      pumpedMuscleCounter = 0;
+      pumpedMuscle = false;
+      return openGrip;
+
+      // if the signal is low and the timer went over, reset
+      // everything. The timer here has to be set to the same as the
+      // previous if statement, because everything happens at that time.
+    } else if (bicepValue != HIGH && amountOfSeconds >= 1500) {
+      amountOfSeconds = 0;
+      pumpedMuscleCounter = 0;
+
+      // if the signal is high(there is a pump), and the time is
+      // not over yet.
+      // we increase the pumpedMuscleCounter by 1 to keep count.
+      // we then change PumpedMuscle to true to show that we have pumped.
+      // if it is pumped twice, we pushed the timer to 1500, so that we
+      // can open the hand instantly.
+    } else if (bicepValue == HIGH && amountOfSeconds <= 1600 && !pumpedMuscle) {
+      pumpedMuscleCounter++;
+      Serial.println("pumped " + pumpedMuscleCounter);
+      pumpedMuscle = true;
+      if (pumpedMuscleCounter == 2) {
+        amountOfSeconds = 1500;
+      } else {
+        delay(100);
+        amountOfSeconds+= 100;
+      }
+
+      // if the signal is not high and the muscle hasn't triggered
+      // the machine yet, return the currentGrip.
+    } else if (bicepValue!=HIGH && pumpedMuscleCounter == 0){
+      amountOfSeconds = 0;
+      return currentGrip;
+
+      //reset the value of pumped muscle back to false on the
+      // second round when it comes back around.
+    } else if (bicepValue!= HIGH && pumpedMuscle) {
+      pumpedMuscle = false;
+
+      // continue pushing the time.
+    } else {
+      delay(100);
+      amountOfSeconds += 100;
+    }
+
+    return currentGrip;
   }
 
 }
 
 //Instantiate the class.
 MuscleMotor* mm = new MuscleMotor(0.5, 0);
+
+
 
 /** ###HARDWARE CONTROL### **/
 
@@ -127,39 +218,53 @@ void openCloseActuator(bool gripOpen, int pressLength) {
   // if we receive a boolean that says, open is true
   // we move the actuator so that it opens.
   // else we close it.
-  if (pressLength >= 2000) {
 
-    if (gripOpen) {
+  if (gripOpen) {
+
+
+    if (pressLength >= 1600) {
+      Serial.println("open");
       //writing onto the servo to open it (extend it)
+      for (pos = 0; pos < 180; pos = pos + 1){
+        myservo.write(pos);
+        delay(5);
+      }
 
-      myservo.writeMicroseconds(0);
-      delay(5);
+    }
+  } else {
+    if (pressLength >= 1600) {
 
-
-    } else {
+      Serial.println("close");
       //writing onto the servo to close it (retract it)
-
-      myservo.writeMicroseconds(0);
-      delay(5);
-
-
-    }}
-  }
-
-  
-
-  void loop() {
-    // put your main code here, to run repeatedly:
-    // Rule of thumb for optimization:
-    // The code within this box should not be more than 8 lines
-
-
-    bicepValue = digitalRead(bicepPin);
-    tricepValue = digitalRead(tricepPin);
-    // this will be used to change gripPosition
-    bool grip = mm->checkGripPosition(bicepValue, tricepValue);
-    pressLength_milliSeconds = mm->getAmountOfSeconds();
-
-    openCloseActuator(grip, pressLength_milliSeconds);
+      for (pos = 180; pos > 1; pos = pos - 1) {
+        myservo.write(pos);
+        delay(5);
+      }
+    }
 
   }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  // Rule of thumb for optimization:
+  // The code within this box should not be more than 8 lines
+
+
+  bicepValue = digitalRead(bicepPin);
+  tricepValue = digitalRead(tricepPin);
+  // this will be used to change gripPosition
+  gripOpen = mm->checkGripPosition(bicepValue, tricepValue);
+  pressLength = mm->getAmountOfSeconds();
+  if (pressLength > 0) {
+
+    Serial.print("pressLength =");
+    Serial.print(pressLength);
+    Serial.print(" gripOpen = ");
+    Serial.println(gripOpen);
+  }
+  openCloseActuator(gripOpen, pressLength);
+
+
+}
+

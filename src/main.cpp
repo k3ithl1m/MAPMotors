@@ -6,8 +6,7 @@
 //  Copyright © 2018 Keith Lim. All rights reserved.
 //
 
-#include <iostream>
-#include "MuscleMotor.hpp"
+#include "musclemotor.hpp"
 
 int main(int argc, const char * argv[]) {
     // insert code here...
