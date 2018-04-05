@@ -6,9 +6,8 @@
 //  Copyright © 2018 Keith Lim. All rights reserved.
 //
 
-#include "MuscleMotor.hpp"
+#include "musclemotor.hpp"
 #include <stdint.h>
-#include <iostream>
 
 
 MuscleMotor::MuscleMotor()
@@ -25,7 +24,6 @@ MuscleMotor::MuscleMotor()
 
 void MuscleMotor::sayHello()
 {
-    std::cout << "Hello This is c++!";
 }
 
 bool MuscleMotor::getSignalRecorded()

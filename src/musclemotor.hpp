@@ -6,8 +6,8 @@
 //  Copyright © 2018 Keith Lim. All rights reserved.
 //
 
-#ifndef MuscleMotor_hpp
-#define MuscleMotor_hpp
+#ifndef musclemotor_hpp
+#define musclemotor_hpp
 
 #include <stdio.h>
 
