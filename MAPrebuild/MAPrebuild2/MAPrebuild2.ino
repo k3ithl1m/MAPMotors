@@ -24,6 +24,7 @@ void setup() {
   Serial.begin(9600);
 }
 
+
 class MuscleMotor {
 private:
   bool openGrip;
@@ -136,8 +137,10 @@ void loop() {
         myservo.write(pos);
         delay(5);
         gripPosition = false;
+
       }
     }
   }
   pressLength_milliSeconds = 0;
+
 }
