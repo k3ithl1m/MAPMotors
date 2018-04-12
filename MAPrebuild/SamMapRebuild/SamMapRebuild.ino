@@ -25,6 +25,7 @@ int emgValue;
 int rmsValue;
 long total;
 int getRMSSignal = 0;
+int threshold;
 
 
 void setup() {
@@ -113,7 +114,6 @@ bool MuscleMotor::checkGripPosition(int16_t bicepValue)
   // for the grip to change (2000 or 2 seconds). We change
   // the time press back to 0;
 
-  /**new**/
   if (amountOfSeconds >= 1600) {
     amountOfSeconds = 0;
   }
@@ -121,7 +121,7 @@ bool MuscleMotor::checkGripPosition(int16_t bicepValue)
   // if (!openGrip) {
 
 
-    //If the muscle is squeezed for 2 seconds, Switch the
+    //If the muscle is squeezed for 1.5 seconds, Switch the
     //grip, save the grip to the currentGrip and then
     // return the openGrip.
     if (amountOfSeconds >= 1500) {
@@ -145,6 +145,8 @@ bool MuscleMotor::checkGripPosition(int16_t bicepValue)
       delay(100);
       amountOfSeconds += 100;
     }
+
+    //## This part is if we were to pump twice within 1.5 seconds
   // } else {
   //   // if the muscle has been pumped twice and it is equal or over the timer
   //   // open the hand.
@@ -258,6 +260,8 @@ int RMS(int emgValue) {
   rmsValue = (sqrt(total/25));
   Serial.print(emgValue);
   Serial.print("\t");
+  Serial.print(threshold);
+  Serial.print("\t");
   Serial.println(rmsValue);
   delay(25);
 
@@ -273,20 +277,12 @@ void loop() {
   // The code within this box should not be more than 8 lines
 
   getRMSSignal = RMS(analogRead(emg) - 334);
-
+  threshold = mm->maxSignal;
   bicepValue = digitalRead(bicepPin);
   // this will be used to change gripPosition
   gripOpen = mm->checkGripPosition(getRMSSignal);
   pressLength = mm->getAmountOfSeconds();
-  if (pressLength > 0) {
-//
-//     Serial.print("pressLength =");
-//     Serial.print(pressLength);
-//     Serial.print(" gripOpen = ");
-//     Serial.println(gripOpen);
-  }
   openCloseActuator(gripOpen, pressLength);
 
 
 }
-
