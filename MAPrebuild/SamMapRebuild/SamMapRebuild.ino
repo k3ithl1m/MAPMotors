@@ -269,7 +269,7 @@ int RMS(int emgValue) {
 }
 
 //Instantiate the class.
-MuscleMotor* mm = new MuscleMotor(36, 0);
+MuscleMotor* mm = new MuscleMotor(25, 0);
 
 void loop() {
   // put your main code here, to run repeatedly:
@@ -277,7 +277,7 @@ void loop() {
   // The code within this box should not be more than 8 lines
 
   getRMSSignal = RMS(analogRead(emg) - 334);
-  threshold = mm->maxSignal;
+  threshold = 25;
   bicepValue = digitalRead(bicepPin);
   // this will be used to change gripPosition
   gripOpen = mm->checkGripPosition(getRMSSignal);
@@ -286,3 +286,4 @@ void loop() {
 
 
 }
+
