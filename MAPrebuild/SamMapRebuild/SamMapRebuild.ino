@@ -114,7 +114,7 @@ bool MuscleMotor::checkGripPosition(int16_t bicepValue)
   // for the grip to change (2000 or 2 seconds). We change
   // the time press back to 0;
 
-  if (amountOfSeconds >= 1600) {
+  if (amountOfSeconds >= 2000) {
     amountOfSeconds = 0;
   }
 
@@ -124,7 +124,7 @@ bool MuscleMotor::checkGripPosition(int16_t bicepValue)
     //If the muscle is squeezed for 1.5 seconds, Switch the
     //grip, save the grip to the currentGrip and then
     // return the openGrip.
-    if (amountOfSeconds >= 1500) {
+    if (amountOfSeconds >= 1900) {
 
       openGrip = !openGrip;
       currentGrip = openGrip;
@@ -226,7 +226,7 @@ void openCloseActuator(bool gripOpen, int pressLength) {
   if (gripOpen) {
 
 
-    if (pressLength >= 1600) {
+    if (pressLength >= 2000) {
       Serial.println("open");
       //writing onto the servo to open it (extend it)
       for (pos = 0; pos < 180; pos = pos + 1){
@@ -236,7 +236,7 @@ void openCloseActuator(bool gripOpen, int pressLength) {
 
     }
   } else {
-    if (pressLength >= 1600) {
+    if (pressLength >= 2000) {
 
       Serial.println("close");
       //writing onto the servo to close it (retract it)
@@ -286,4 +286,3 @@ void loop() {
 
 
 }
-
